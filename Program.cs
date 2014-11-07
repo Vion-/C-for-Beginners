@@ -11,14 +11,21 @@ namespace ConsoleApplication1
     {
         static void Main(string[] args)
         {
-            //Contains user provided username
-            string username;
-            //Contains user provided password
-            string password;
-            //Name of file containing username & password
-
             try
             {
+                //-----------------------------------------------------------------------
+                //-----------------------------------------------------------------------
+                //Beginning of Login validation
+                //-----------------------------------------------------------------------
+                //-----------------------------------------------------------------------
+
+                //Contains user provided username
+                string username;
+                //Contains user provided password
+                string password;
+                // "Check Passed!" = login validation passed
+                string login = "Check Failed!";
+
                 StreamReader userValidation = new StreamReader("Users.txt");
                 Console.WriteLine("Vehicle Management System \n=========================\n");
                 Console.WriteLine("Username: ");
@@ -34,14 +41,21 @@ namespace ConsoleApplication1
                 //[Value of username]
                 //Password
                 //[Value of Password]
-                Console.WriteLine(validateUser.Validate(username, password, userValidation));
+                login = validateUser.Validate(username, password, userValidation);
+                Console.WriteLine(login);
                 userValidation.Close();
+                userValidation = null;
+                validateUser = null;
+                Console.ReadLine();
+                //-----------------------------------------------------------------------
+                //-----------------------------------------------------------------------
             }
             catch (Exception e)
             {
+                Console.Clear();
                 Console.WriteLine("Oops! Something went wrong: \n\n {0}", e);
+                Console.ReadLine();
             }
-            Console.ReadLine();
         }
     }
 }
