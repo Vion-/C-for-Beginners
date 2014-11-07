@@ -9,19 +9,19 @@ namespace ConsoleApplication1
 {
     class ValidationClass
     {
-        string text {get; set;}
+        private string text {get; set;}
         //True = "Username" heading was found on txt file and so on next loop it will compare
         //the value on file against the one provided by user
-        bool usernameCopy {get; set;}
+        private bool usernameCopy {get; set;}
         //True = "Password" heading was found on txt file and so on next loop it will compare
         //the value on file against the one provided by user
-        bool passwordCopy {get; set;}
+        private bool passwordCopy {get; set;}
         //True = username check passed
-        bool usernamePassed {get; set;}
+        private bool usernamePassed {get; set;}
         //True = password check passed
-        bool passwordPassed {get; set;}
+        private bool passwordPassed {get; set;}
         //Name of file containing username & password (which is assigned value in constructor)
-        string file { get; set; }    
+        private string file { get; set; }    
 
         //Class constructor
         public ValidationClass()
