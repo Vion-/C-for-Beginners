@@ -25,6 +25,7 @@ namespace ConsoleApplication1
                 username = Console.ReadLine().Trim();
                 Console.WriteLine("Password: ");
                 password = Console.ReadLine().Trim();
+
                 ValidationClass validateUser = new ValidationClass();
                 //This method accepts the username and password entered that will be compared
                 //against the one on file. It also takes the Streamreader. This class will work
@@ -34,6 +35,7 @@ namespace ConsoleApplication1
                 //Password
                 //[Value of Password]
                 Console.WriteLine(validateUser.Validate(username, password, userValidation));
+                userValidation.Close();
             }
             catch (Exception e)
             {

@@ -10,12 +10,9 @@ namespace ConsoleApplication1
     class ValidationClass
     {
         private string text {get; set;}
-        //True = "Username" heading was found on txt file and so on next loop it will compare
-        //the value on file against the one provided by user
-        private bool usernameCopy {get; set;}
-        //True = "Password" heading was found on txt file and so on next loop it will compare
-        //the value on file against the one provided by user
-        private bool passwordCopy {get; set;}
+        //copy = 1 if "Username" heading found on txt. copy = 2 if "Password" heading found. 
+        //copy = 0 if neither are found
+        private byte copy { get; set; }
         //True = username check passed
         private bool usernamePassed {get; set;}
         //True = password check passed
@@ -26,61 +23,50 @@ namespace ConsoleApplication1
         //Class constructor
         public ValidationClass()
         {
-            text = "";
-            usernameCopy = false;
-            passwordCopy = false;
+            copy = 0;
             usernamePassed = false;
             passwordPassed = false;
         }
 
         public  string Validate (string username, string password, StreamReader userValidation)
         {
+            text = userValidation.ReadLine();
             while (text != null)
             {
-                text = userValidation.ReadLine();
-                if (text != null)
+                //Will execute when below IFs are true
+                if (copy != 0)
                 {
-                    //Will execute when below IFs are true
-                    if (usernameCopy == true)
+                    switch (copy)
                     {
-                        if (text == username)
-                        {
-                            usernamePassed = true;
-                            usernameCopy = false;
-                        }
-                        else
-                            usernameCopy = false;
+                        case 1:
+                            if (text == username)
+                                usernamePassed = true;
+                            copy = 0;
+                            break;
+                        case 2:
+                            if (text == password)
+                                passwordPassed = true;
+                            copy  = 0;
+                            break;
+                        default:
+                            break;
                     }
-                    //Will execute when below IFs are true
-                    if (passwordCopy == true)
-                    {
-                        if (text == password)
-                        {
-                            passwordPassed = true;
-                            passwordCopy = false;
-                        }
-                        else
-                            passwordCopy = false;
-                    }
-                    //Above IFs will only execute if this is true
-                    if (text.ToUpper() == "USERNAME")
-                        usernameCopy = true;
-                    //Above IFs will only execute if this is true
-                    if (text.ToUpper() == "PASSWORD")
-                        passwordCopy = true;
                 }
+                if (text.ToUpper() == "USERNAME")
+                    copy = 1;
+                //Above IFs will only execute if this is true
+                if (text.ToUpper() == "PASSWORD")
+                    copy = 2;
+                text = userValidation.ReadLine();
             }
             //Validates if both username and password checks were passed
             switch (usernamePassed && passwordPassed)
             {
                 case true:
                     return "Check Passed!";
-                    break;
                 default:
                     return "Check Failed!";
-                    break;
             }
-            userValidation.Close();
         }
     }
 }
