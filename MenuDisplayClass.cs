@@ -35,5 +35,36 @@ namespace ConsoleApplication1
             Console.WriteLine("Option not available");
             Console.ReadLine();
         }
+
+        public void CarDetailsMenu(List<Car> carsList)
+        {
+            Console.Clear();
+            //generic instance for car 
+            Car generic = new Car();
+            Console.WriteLine("Car details \n=========================\n");
+            Console.WriteLine("Make: ");
+            generic.Make = Console.ReadLine();
+            Console.WriteLine("Model: ");
+            generic.Model = Console.ReadLine();
+            Console.WriteLine("Year: ");
+            generic.Year = int.Parse(Console.ReadLine());
+            Console.WriteLine("Price: ");
+            generic.Price = int.Parse(Console.ReadLine());
+            Console.WriteLine("Car Type (Sedan, Hatchback, Coupe, Convertible): ");
+            //Attempts to convert user value to carTypeEnum value
+            string carType;
+            carType = Console.ReadLine();
+            carTypeEnum convertedValue;
+            if (Enum.TryParse<carTypeEnum>(carType, true, out convertedValue))
+                generic.CarType = convertedValue;
+            else
+            {
+                Console.WriteLine("Car type not recognized. Defaulting to \" Unknown \"");
+                generic.CarType = carTypeEnum.Unknown;
+                Console.ReadLine();
+            }
+            carsList.Add(generic);
+        }
+
     }
 }

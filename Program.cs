@@ -20,34 +20,53 @@ namespace ConsoleApplication1
                 //-----------------------------------------------------------------------
 
                 //used to navigate menu options
-                byte menu = 0;
+                string menu = string.Empty;
+                int Menu = 0;
 
                 if (login == "Check Passed!")
                 {
                     //class used to display different menus 
                     MenuDisplayClass menuDisplay = new MenuDisplayClass();
+                    //Collection of cars
+                    List<Car> carsList = new List<Car>();
+                    //obtain user input and attempts to parse to int (to avoid exeption in case of string input)
+                    menu = Console.ReadLine();
+                    int.TryParse(menu, out Menu);
                     //option 4 = exit program
-                    while (menu != 4)
+                    while (Menu != 4)
                     {
                         menuDisplay.MainMenu();
-                        menu = byte.Parse(Console.ReadLine());
-                        switch (menu)
+                        //obtain user input and attempts to parse to int (to avoid exeption in case of string input)
+                        menu = Console.ReadLine();
+                        int.TryParse(menu, out Menu);
+                        switch (Menu)
                         {
                             case 1:
                                 menuDisplay.VehicleTypeMenu();
-                                menu = byte.Parse(Console.ReadLine());
-                                switch (menu)
+                                //obtain user input and attempts to parse to int (to avoid exeption in case of string input)
+                                menu = Console.ReadLine();
+                                int.TryParse(menu, out Menu);
+                                switch (Menu)
                                 {
                                     case 1:
+                                        //Obtain car details and adds it as an instance of car class to car collection
+                                        menuDisplay.CarDetailsMenu(carsList);
                                         break;
                                     case 2:
                                         break;
                                     case 3:
                                         break;
                                     default:
-                                        menu = 0;
+                                        Menu = 0;
                                         break;
                                 }
+                                break;
+                            case 2:
+                                foreach (Car car in carsList)
+                                {
+                                    Console.WriteLine("{0} {1} {2} {3} {4}", car.Make, car.Model, car.Price, car.Year, car.CarType);
+                                }
+                                Console.ReadLine();
                                 break;
                             case 4:
                                 menuDisplay.ExitMessage();
