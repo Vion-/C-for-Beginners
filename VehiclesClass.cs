@@ -24,7 +24,7 @@ namespace ConsoleApplication1
     }
     class Motobike : Vehicle
     {
-        bool TwinSpark { get; set; }
+        public bool TwinSpark { get; set; }
     }
     enum carTypeEnum
     {
