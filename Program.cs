@@ -20,32 +20,28 @@ namespace ConsoleApplication1
                 //-----------------------------------------------------------------------
 
                 //used to navigate menu options
-                string menu = string.Empty;
                 int Menu = 0;
 
                 if (login == "Check Passed!")
                 {
                     //class used to display different menus 
                     MenuDisplayClass menuDisplay = new MenuDisplayClass();
-                    //Collection of cars
+                    //Collection of vehicles
                     List<Car> carsList = new List<Car>();
+                    List<Motobike> bikesList = new List<Motobike>();
+                    List<Lorrie> lorrieList = new List<Lorrie>();
                     //obtain user input and attempts to parse to int (to avoid exeption in case of string input)
-                    menu = Console.ReadLine();
-                    int.TryParse(menu, out Menu);
+                    Console.ReadLine();
                     //option 4 = exit program
                     while (Menu != 4)
                     {
-                        menuDisplay.MainMenu();
                         //obtain user input and attempts to parse to int (to avoid exeption in case of string input)
-                        menu = Console.ReadLine();
-                        int.TryParse(menu, out Menu);
+                        Menu = menuDisplay.MainMenu();
                         switch (Menu)
                         {
                             case 1:
-                                menuDisplay.VehicleTypeMenu();
                                 //obtain user input and attempts to parse to int (to avoid exeption in case of string input)
-                                menu = Console.ReadLine();
-                                int.TryParse(menu, out Menu);
+                                Menu = menuDisplay.VehicleTypeMenu();
                                 switch (Menu)
                                 {
                                     case 1:
@@ -53,8 +49,10 @@ namespace ConsoleApplication1
                                         menuDisplay.CarDetailsMenu(carsList);
                                         break;
                                     case 2:
+                                        menuDisplay.MotorbikeDetailsMenu(bikesList);
                                         break;
                                     case 3:
+                                        menuDisplay.LorrieDetailsMenu(lorrieList);
                                         break;
                                     default:
                                         Menu = 0;
@@ -62,10 +60,70 @@ namespace ConsoleApplication1
                                 }
                                 break;
                             case 2:
-                                foreach (Car car in carsList)
+                                menuDisplay.DisplayAllVehicle(carsList, bikesList, lorrieList);
+                                break;
+                            case 3:
+                                //selected query type here : select, delete
+                                int queryRequest;
+                                //vehicle type for above query
+                                int queryVehicle;
+                                queryRequest = menuDisplay.QueryRequest();
+                                queryVehicle = menuDisplay.VehicleTypeMenu();
+                                if ((queryVehicle != 1) && (queryVehicle != 2) && (queryVehicle != 3))
                                 {
-                                    Console.WriteLine("{0} {1} {2} {3} {4}", car.Make, car.Model, car.Price, car.Year, car.CarType);
+                                    Console.WriteLine("Option not available, defaulting to Car");
+                                    queryVehicle = 1;
+                                    Console.ReadLine();
                                 }
+                                //will contain Make for vehicle search
+                                string vehicleMake;
+                                Console.Clear();
+                                if (queryRequest == 1)
+                                    Console.WriteLine("Selection Request \n=========================");
+                                else
+                                    Console.WriteLine("Deletion Request \n=========================");
+                                Console.WriteLine("Provide vehicle Make to search by: ");
+                                vehicleMake = Console.ReadLine().Trim().ToUpper();
+                                Console.Clear();
+                                Console.WriteLine("Query Request \n=========================");
+                                switch (queryVehicle)
+	                            {
+                                    case 1:
+                                            var carsQuery = from car in carsList
+                                                            where car.Make.ToUpper() == vehicleMake
+                                                            select car;
+                                            foreach (var car in carsQuery)
+                                            {
+                                                Console.WriteLine("Make: {0} Model: {1} Price: {2} Year: {3} Type: {4}", car.Make, car.Model, car.Price, car.Year, car.CarType);
+                                            }
+                                        //removes the matching item from the list based on vehicleMake
+                                            menuDisplay.RemovalQuery(queryRequest, carsList, vehicleMake);
+                                        break;
+                                    case 2:
+                                        var bikeQuery = from bike in bikesList
+                                                            where bike.Make.ToUpper() == vehicleMake
+                                                            select bike;
+                                            foreach (var bike in bikeQuery)
+                                            {
+                                                Console.WriteLine("Make: {0} Model: {1} Price: {2} Year: {3} Twin Spark?: {4}", bike.Make, bike.Model, bike.Price, bike.Year, bike.TwinSpark);
+                                            }
+                                            //removes the matching item from the list based on vehicleMake
+                                            menuDisplay.RemovalQuery2 (queryRequest, bikesList, vehicleMake);
+                                        break;
+                                    case 3:
+                                        var lorrieQuery = from lorrie in lorrieList
+                                                            where lorrie.Make.ToUpper() == vehicleMake
+                                                            select lorrie;
+                                            foreach (var lorrie in lorrieQuery)
+                                            {
+                                                Console.WriteLine("Make: {0} Model: {1} Price: {2} Year: {3} Carry Load: {4}", lorrie.Make, lorrie.Model, lorrie.Price, lorrie.Year, lorrie.CarryLoad);
+                                            }
+                                            //removes the matching item from the list based on vehicleMake
+                                            menuDisplay.RemovalQuery3 (queryRequest, lorrieList, vehicleMake);
+                                        break;
+		                            default:
+                                        break;
+	                            }
                                 Console.ReadLine();
                                 break;
                             case 4:
